@@ -1,0 +1,1 @@
+{"ast":null,"code":"const FollowList = ({}) => {};","map":{"version":3,"sources":["C:/Users/애드트라이브/Desktop/react-nodebird-re-exercise/prepare/front/components/FollowList.js"],"names":["FollowList"],"mappings":"AACA,MAAMA,UAAU,GAAG,CAAE,EAAF,KAAY,CAE9B,CAFD","sourcesContent":["\r\nconst FollowList = ( {  } ) => {\r\n    \r\n}"]},"metadata":{},"sourceType":"script"}
