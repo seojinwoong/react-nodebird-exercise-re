@@ -4,13 +4,18 @@ import Head from 'next/head';
 import { Form, Input, Checkbox, Button } from 'antd';
 import useInput from '../hooks/useInput';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const ErrorMsg = styled.div`
     color: red;
 `;
 
 const Signup = () => {
-    const [id, onChangeId] = useInput('');
+    const dispatch = useDispatch();
+    const { signUpLoading } = useSelector((state) => state.user);
+
+    const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
 
@@ -19,7 +24,7 @@ const Signup = () => {
     const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
         setPasswordError(e.target.value !== password);
-    }, [password, passwordCheck]);
+    }, [password]);
 
     const [term, setTerm] = useState(false);
     const [termError, setTermError] = useState(true);
@@ -35,10 +40,12 @@ const Signup = () => {
         if (!term) {
             return setTermError(true);
         }
+        dispatch({
+            type: SIGN_UP_REQUEST,
+            data: { email, password, nickname }
+        })
 
-        console.log('회원가입 정보 출력', id, nickname, password);
-
-    }, [password, passwordCheck, term]);
+    }, [email, password, passwordCheck, term]);
 
     return (
         <>
@@ -48,9 +55,9 @@ const Signup = () => {
             <AppLayout>
                 <Form onFinish={onSubmit}>
                     <div>
-                        <label htmlFor="user-id">아이디</label>
+                        <label htmlFor="user-email">아이디</label>
                         <br />
-                        <Input name='user-id' value={id} onChange={onChangeId} required/>
+                        <Input name='user-email' type="email" value={email} onChange={onChangeEmail} required/>
                     </div>
                     <div>
                         <label htmlFor="user-nickname">닉네임</label>
@@ -73,7 +80,7 @@ const Signup = () => {
                         {termError && <ErrorMsg>약관에 동의하셔야 합니다.</ErrorMsg>}
                     </div>
                     <div style={{ marginTop: 10 }}>
-                        <Button type="primary" htmlType="submit">가입하기</Button>
+                        <Button type="primary" htmlType="submit" loading={signUpLoading}>가입하기</Button>
                     </div>
                 </Form>
             </AppLayout>
