@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Popover, Avatar } from 'antd';
+import { Button, Card, Popover, Avatar, List, Comment } from 'antd';
 import { useSelector } from 'react-redux';
 import { HeartTwoTone, HeartOutlined, RetweetOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import PostImages from '../components/PostImages';
+import CommentForm from '../components/CommentForm';
 import PostCardContent from '../components/PostCardContent';
 
 const PostCard = ({ post }) => {
@@ -54,7 +55,21 @@ const PostCard = ({ post }) => {
             {
                 commentFormOpened && (
                     <div>
-                        <CommentForm />
+                        <CommentForm post={post}/>
+                        <List
+                            header={`${post.Comments.length}개의 댓글`}
+                            itemLayout='horizontal'
+                            dataSource={post.Comments}
+                            renderItem={(item) => (
+                                <li>
+                                    <Comment 
+                                        author={item.User.nickname}
+                                        avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                                        content={item.content}
+                                    />
+                                </li>
+                            )}
+                        />
                     </div>
                 )   
             }
@@ -62,14 +77,14 @@ const PostCard = ({ post }) => {
     )
 };
 
-PostCard.proptypes = {
+PostCard.propTypes = {
     post: PropTypes.shape({
         id: PropTypes.number,
         User: PropTypes.object,
         content: PropTypes.string,
         createdAt: PropTypes.object,
-        Images: PropTypes.arrayOf(PropTypes.object),
-        Comments: PropTypes.arrayOf(PropTypes.object)
+        Comments: PropTypes.arrayOf(PropTypes.object), // 객체들의 배열이라는 의미
+        Images: PropTypes.arrayOf(PropTypes.object) // 객체들의 배열이라는 의미
     }).isRequired
 }
 

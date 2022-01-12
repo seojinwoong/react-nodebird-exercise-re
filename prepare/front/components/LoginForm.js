@@ -23,8 +23,8 @@ const LoginForm = () => {
     // const style = useMemo(() => ({ marginTop: 10 }), []);
 
     const onSubmitForm = useCallback(() => {
-        dispatch(loginRequestAction({id, password}));
-    }, [id, password]);
+        dispatch(loginRequestAction({email, password}));
+    }, [email, password]);
 
     return (
         <FormWrapper onFinish={onSubmitForm}>
@@ -44,7 +44,7 @@ const LoginForm = () => {
                 required />
             </div>
             <ButtonWrapper>
-                <Button type='primary' htmlType='submit' loading={loginLoading}>로그인</Button>
+                <Button type='primary' htmlType='submit' loading={logInLoading}>로그인</Button>
                 <Link href='/signup'><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
         </FormWrapper>
